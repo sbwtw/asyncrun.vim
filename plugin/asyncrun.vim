@@ -186,6 +186,10 @@ if !exists('g:asyncrun_window_location')
 	let g:asyncrun_window_location = 'botright'
 endif
 
+if !exists('g:asyncrun_auto_restart')
+	let g:asyncrun_auto_restart = 1
+endif
+
 if !exists('g:asyncrun_stdin')
 	let g:asyncrun_stdin = has('win32') || has('win64') || has('win95')
 endif
@@ -599,8 +603,13 @@ function! s:AsyncRun_Job_Start(cmd)
 		if a:cmd == [] | let l:empty = 1 | endif
 	endif
 	if s:async_state != 0 || l:running != 0
-		call s:ErrorMsg("background job is still running")
-		return -2
+		if g:asyncrun_auto_restart == 0
+			call s:ErrorMsg("background job is still running")
+			return -2
+		else
+			call asyncrun#stop('<bang>')
+			sleep 1m
+		endif
 	endif
 	if l:empty != 0
 		call s:ErrorMsg("empty arguments")
