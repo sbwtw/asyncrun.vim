@@ -1,0 +1,43 @@
+From 1e3c8a2b0972d1a0589d41f0969759ae893a4eb3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E7=9F=B3=E5=8D=9A=E6=96=87?= <sbw@sbw.so>
+Date: Wed, 20 Mar 2019 23:31:57 +0800
+Subject: [PATCH] add option for auto restart
+
+---
+ plugin/asyncrun.vim | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/plugin/asyncrun.vim b/plugin/asyncrun.vim
+index b805af5..2026637 100644
+--- a/plugin/asyncrun.vim
++++ b/plugin/asyncrun.vim
+@@ -186,6 +186,10 @@ if !exists('g:asyncrun_window_location')
+ 	let g:asyncrun_window_location = 'botright'
+ endif
+ 
++if !exists('g:asyncrun_auto_restart')
++	let g:asyncrun_auto_restart = 1
++endif
++
+ if !exists('g:asyncrun_stdin')
+ 	let g:asyncrun_stdin = has('win32') || has('win64') || has('win95')
+ endif
+@@ -599,8 +603,13 @@ function! s:AsyncRun_Job_Start(cmd)
+ 		if a:cmd == [] | let l:empty = 1 | endif
+ 	endif
+ 	if s:async_state != 0 || l:running != 0
+-		call s:ErrorMsg("background job is still running")
+-		return -2
++		if g:asyncrun_auto_restart == 0
++			call s:ErrorMsg("background job is still running")
++			return -2
++		else
++			call asyncrun#stop('<bang>')
++			sleep 1m
++		endif
+ 	endif
+ 	if l:empty != 0
+ 		call s:ErrorMsg("empty arguments")
+-- 
+2.21.0
+
