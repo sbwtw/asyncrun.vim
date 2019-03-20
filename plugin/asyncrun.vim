@@ -182,6 +182,10 @@ if !exists('g:asyncrun_save')
 	let g:asyncrun_save = 0
 endif
 
+if !exists('g:asyncrun_window_location')
+	let g:asyncrun_window_location = 'botright'
+endif
+
 if !exists('g:asyncrun_stdin')
 	let g:asyncrun_stdin = has('win32') || has('win64') || has('win95')
 endif
@@ -1375,12 +1379,12 @@ function! asyncrun#quickfix_toggle(size, ...)
 		endif
 	elseif l:mode == 1
 		if s:quickfix_open == 0
-			exec 'botright copen '. ((a:size > 0)? a:size : ' ')
+			exec g:asyncrun_window_location 'copen '. ((a:size > 0)? a:size : ' ')
 			wincmd k
 		endif
 	elseif l:mode == 2
 		if s:quickfix_open == 0
-			exec 'botright copen '. ((a:size > 0)? a:size : ' ')
+			exec g:asyncrun_window_location 'copen '. ((a:size > 0)? a:size : ' ')
 			wincmd k
 		else
 			silent! cclose
