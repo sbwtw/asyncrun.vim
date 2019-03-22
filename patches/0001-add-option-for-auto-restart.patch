@@ -14,7 +14,7 @@ index b805af5..2026637 100644
 @@ -186,6 +186,10 @@ if !exists('g:asyncrun_window_location')
  	let g:asyncrun_window_location = 'botright'
  endif
- 
+
 +if !exists('g:asyncrun_auto_restart')
 +	let g:asyncrun_auto_restart = 1
 +endif
@@ -33,11 +33,11 @@ index b805af5..2026637 100644
 +			return -2
 +		else
 +			call asyncrun#stop('<bang>')
-+			sleep 1m
++			sleep 100m
 +		endif
  	endif
  	if l:empty != 0
  		call s:ErrorMsg("empty arguments")
--- 
+--
 2.21.0
 

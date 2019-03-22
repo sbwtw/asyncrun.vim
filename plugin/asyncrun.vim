@@ -608,7 +608,7 @@ function! s:AsyncRun_Job_Start(cmd)
 			return -2
 		else
 			call asyncrun#stop('<bang>')
-			sleep 1m
+			sleep 100m
 		endif
 	endif
 	if l:empty != 0
